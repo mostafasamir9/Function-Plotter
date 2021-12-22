@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QtDebug>
 #include "tinyexpr.h"
+#include "functions.h"
 
 using namespace std;
 
@@ -47,7 +48,88 @@ void MainWindow::on_pushButton_clicked()
     y_min = ui->y_min->text();
     y_max = ui->y_max->text();
 
-    // Convert from string to double
+    QString equation;
+    equation = ui->equation->text();
+
+    /******************************** Validations ***********************************/
+
+    if(equation.isEmpty()){
+        displayMessage("You didn't enter the function!");
+        return;
+    }
+
+    bool emptyinput = 1;
+    for ( int equation_index = 0 ; equation_index < equation.length() ; equation_index++ )
+    {
+        if(equation[equation_index].isNumber() || equation[equation_index].isLetter())
+        {
+            emptyinput = 0; // if ther's any number or letter then equation not empty
+        }
+        /* throw error if there's no operation between number and x */
+        if(equation.length() - equation_index >=2 && equation[equation_index].isNumber() && equation[equation_index+1].isLetter())
+        {
+            displayMessage("You must include ' * ' character between the number & x in multiplication");
+        }
+    }
+
+    if(emptyinput){
+        displayMessage("your input is only white spaces!");
+    }
+
+    if(x_min.isEmpty()){
+        displayMessage("You didn't enter x_min!");
+        return;
+    }
+    if(x_max.isEmpty()){
+        displayMessage("You didn't enter x_min!");
+        return;
+    }
+    if(y_min.isEmpty()){
+        displayMessage("You didn't enter y_min!");
+        return;
+    }
+    if(y_max.isEmpty()){
+        displayMessage("You didn't enter y_max!");
+        return;
+    }
+
+    /* Check if the inputs of the ranges contains letters */
+    for ( int digit_index = 0 ; digit_index < x_min.length() ; digit_index++)
+    {
+        if(!(x_min[digit_index].isDigit() || x_min[digit_index]=='.' || x_min[digit_index] == '-' || x_min[digit_index]=='+'))
+        {
+            displayMessage("x_min is invalid!  Enter Only numbers");
+            return;
+        }
+    }
+
+    for ( int digit_index = 0 ; digit_index < y_min.length() ; digit_index++)
+    {
+        if(!(y_min[digit_index].isDigit() || y_min[digit_index]=='.' || y_min[digit_index] == '-' || y_min[digit_index]=='+'))
+        {
+            displayMessage("y_min is invalid!  Enter Only numbers");
+            return;
+        }
+    }
+    for ( int digit_index = 0 ; digit_index < x_max.length() ; digit_index++)
+    {
+        if(!(x_max[digit_index].isDigit() || x_max[digit_index]=='.' || x_max[digit_index] == '-' || x_max[digit_index]=='+' ))
+        {
+            displayMessage("x_max is invalid!  Enter Only numbers");
+            return;
+        }
+    }
+    for ( int digit_index = 0 ; digit_index < y_max.length() ; digit_index++)
+    {
+        if(!(y_max[digit_index].isDigit() || y_max[digit_index]=='.' || y_max[digit_index] == '-' || y_max[digit_index]=='+'))
+        {
+            displayMessage("y_max is invalid!  Enter Only numbers");
+            return;
+        }
+    }
+
+
+    /********************** Convert the inputs to proper form ******************************/
     double x_min_d, x_max_d = 0;
     x_min_d = x_min.toDouble();
     x_max_d = x_max.toDouble();
@@ -56,55 +138,33 @@ void MainWindow::on_pushButton_clicked()
     y_min_d = y_min.toDouble();
     y_max_d = y_max.toDouble();
 
-    QString equation;
     // Getting equation string
-    equation = ui->equation->text();
     equation = equation.toLower();
 
-    if(equation.isEmpty()){
-        QMessageBox msgBox2;
-        QString errormsg = "You didn't enter anything!";
-        msgBox2.setText(errormsg);
-        msgBox2.exec();
-    }
 
-    bool emptyinput = 1;
+    /********************** Parsing the equation ****************************/
 
-    for ( int equation_index = 0 ; equation_index < equation.length() ; equation_index++ )
-    {
-        if(equation[equation_index].isNumber() || equation[equation_index].isLetter())
-        {
-            emptyinput = 0;
-        }
-        if(equation.length() - equation_index >=2 && equation[equation_index].isNumber() && equation[equation_index+1].isLetter())
-        {
-            QMessageBox msgBox;
-            QString errormsg = "You must include ' * ' character between the number & x in multiplication";
-            msgBox.setText(errormsg);
-            msgBox.exec();
-        }
-    }
+    // Convert the string to chars array because of the mathmatical parser library
+    QByteArray chararray = equation.toLocal8Bit(); // string -> qbytearray
+    const char* expression = chararray.data(); // qbytearray -> char*
 
-    if(emptyinput){
-        QMessageBox msgBox2;
-        QString errormsg = "You didn't enter anything!";
-        msgBox2.setText(errormsg);
-        msgBox2.exec();
-    }
 
-    QByteArray ba = equation.toLocal8Bit();
+    double x; // The x variable in f(x)
 
-    const char *expression = ba.data();
-
-    double x, y;
-    /* Store variable names and pointers. */
+    // Store variable names and pointers.
     te_variable vars[] = { {"x", &x}};
 
-    int err;
-    /* Compile the expression with variables. */
+    int err; // the error index
+
+    // Compile the expression with variable
+    // te_compile params -> (pointer of chars array , pointer of the vars 2d  array , int count of varaibles , error pointer)
     te_expr* expr = te_compile(expression, vars,1, &err);
 
-    QVector<double> x_arr((x_max_d+abs(x_min_d))*100 + 1), y_arr((x_max_d+abs(x_min_d))*100 + 1); // initialize with entries 0..100
+    //Initial the vectors
+    //precision is 100
+    QVector<double> x_arr((x_max_d+abs(x_min_d))*100 + 1);
+    QVector<double> y_arr((x_max_d+abs(x_min_d))*100 + 1);
+
 
     if (expr) {
         int arr_index = 0;

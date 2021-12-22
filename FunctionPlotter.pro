@@ -16,6 +16,7 @@ SOURCES += \
     tinyexpr.c
 
 HEADERS += \
+    functions.h \
     mainwindow.h \
     qcustomplot.h \
     tinyexpr.h
