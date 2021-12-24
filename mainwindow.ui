@@ -461,93 +461,9 @@
     </property>
     <property name="palette">
      <palette>
-      <active>
-       <colorrole role="Button">
-        <brush brushstyle="SolidPattern">
-         <color alpha="255">
-          <red>255</red>
-          <green>255</green>
-          <blue>255</blue>
-         </color>
-        </brush>
-       </colorrole>
-       <colorrole role="Base">
-        <brush brushstyle="SolidPattern">
-         <color alpha="255">
-          <red>255</red>
-          <green>255</green>
-          <blue>255</blue>
-         </color>
-        </brush>
-       </colorrole>
-       <colorrole role="Window">
-        <brush brushstyle="SolidPattern">
-         <color alpha="255">
-          <red>255</red>
-          <green>255</green>
-          <blue>255</blue>
-         </color>
-        </brush>
-       </colorrole>
-      </active>
-      <inactive>
-       <colorrole role="Button">
-        <brush brushstyle="SolidPattern">
-         <color alpha="255">
-          <red>240</red>
-          <green>240</green>
-          <blue>240</blue>
-         </color>
-        </brush>
-       </colorrole>
-       <colorrole role="Base">
-        <brush brushstyle="SolidPattern">
-         <color alpha="255">
-          <red>255</red>
-          <green>255</green>
-          <blue>255</blue>
-         </color>
-        </brush>
-       </colorrole>
-       <colorrole role="Window">
-        <brush brushstyle="SolidPattern">
-         <color alpha="255">
-          <red>240</red>
-          <green>240</green>
-          <blue>240</blue>
-         </color>
-        </brush>
-       </colorrole>
-      </inactive>
-      <disabled>
-       <colorrole role="Button">
-        <brush brushstyle="SolidPattern">
-         <color alpha="255">
-          <red>255</red>
-          <green>255</green>
-          <blue>255</blue>
-         </color>
-        </brush>
-       </colorrole>
-       <colorrole role="Base">
-        <brush brushstyle="SolidPattern">
-         <color alpha="255">
-          <red>255</red>
-          <green>255</green>
-          <blue>255</blue>
-         </color>
-        </brush>
-       </colorrole>
-       <colorrole role="Window">
-        <brush brushstyle="SolidPattern">
-         <color alpha="255">
-          <red>255</red>
-          <green>255</green>
-          <blue>255</blue>
-         </color>
-        </brush>
-       </colorrole>
-      </disabled>
+      <active/>
+      <inactive/>
+      <disabled/>
      </palette>
     </property>
     <property name="styleSheet">
@@ -627,7 +543,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>-1</string>
+      <string>-5</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="x_max">
@@ -640,7 +556,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>1</string>
+      <string>5</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="y_min">
@@ -653,7 +569,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>-1</string>
+      <string>-5</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="y_max">
@@ -666,7 +582,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>1</string>
+      <string>5</string>
      </property>
     </widget>
     <widget class="QLabel" name="Yminlabel">
@@ -736,6 +652,18 @@
     </property>
     <property name="text">
      <string>Draw</string>
+    </property>
+    <property name="shortcut">
+     <string>Return</string>
+    </property>
+    <property name="autoDefault">
+     <bool>false</bool>
+    </property>
+    <property name="default">
+     <bool>false</bool>
+    </property>
+    <property name="flat">
+     <bool>false</bool>
     </property>
    </widget>
   </widget>

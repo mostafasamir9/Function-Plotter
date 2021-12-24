@@ -30,8 +30,8 @@ void MainWindow::makePlot()
     ui->customplot->xAxis->setLabel("x");
     ui->customplot->yAxis->setLabel("y");
     // set axes ranges, so we see all data:
-    ui->customplot->xAxis->setRange(-1, 1);
-    ui->customplot->yAxis->setRange(-1, 1);
+    ui->customplot->xAxis->setRange(-5, 5);
+    ui->customplot->yAxis->setRange(-5, 5);
     ui->customplot->replot();
 
 }
@@ -53,8 +53,15 @@ void MainWindow::on_pushButton_clicked()
 
     /******************************** Validations ***********************************/
 
+    // if the expression is empty
     if(equation.isEmpty()){
         displayMessage("You didn't enter the function!");
+        return;
+    }
+    // if the expression is begin with x and /
+    if (equation[0] == '*' ||equation[0] == '/')
+    {
+        displayMessage("You can't begin the expression with multiply and divison!");
         return;
     }
 
@@ -69,11 +76,13 @@ void MainWindow::on_pushButton_clicked()
         if(equation.length() - equation_index >=2 && equation[equation_index].isNumber() && equation[equation_index+1].isLetter())
         {
             displayMessage("You must include ' * ' character between the number & x in multiplication");
+            return;
         }
     }
 
     if(emptyinput){
-        displayMessage("your input is only white spaces!");
+        displayMessage("your didn't enter an expression!");
+        return;
     }
 
     if(x_min.isEmpty()){
@@ -128,8 +137,8 @@ void MainWindow::on_pushButton_clicked()
         }
     }
 
-
     /********************** Convert the inputs to proper form ******************************/
+
     double x_min_d, x_max_d = 0;
     x_min_d = x_min.toDouble();
     x_max_d = x_max.toDouble();
@@ -146,61 +155,20 @@ void MainWindow::on_pushButton_clicked()
 
     // Convert the string to chars array because of the mathmatical parser library
     QByteArray chararray = equation.toLocal8Bit(); // string -> qbytearray
-    const char* expression = chararray.data(); // qbytearray -> char*
-
-
-    double x; // The x variable in f(x)
-
-    // Store variable names and pointers.
-    te_variable vars[] = { {"x", &x}};
-
-    int err; // the error index
-
-    // Compile the expression with variable
-    // te_compile params -> (pointer of chars array , pointer of the vars 2d  array , int count of varaibles , error pointer)
-    te_expr* expr = te_compile(expression, vars,1, &err);
+    char* expression = chararray.data(); // qbytearray -> char*
 
     //Initial the vectors
     //precision is 100
-    QVector<double> x_arr((x_max_d+abs(x_min_d))*100 + 1);
-    QVector<double> y_arr((x_max_d+abs(x_min_d))*100 + 1);
+    QVector<double> x_arr((x_max_d+abs(x_min_d))*PRECISION + 1);
+    QVector<double> y_arr((x_max_d+abs(x_min_d))*PRECISION + 1);
 
-
-    if (expr) {
-        int arr_index = 0;
-        for (float i=x_min_d; i<x_max_d; i+=0.01)
-        {
-            x = i;
-
-            x_arr[arr_index]=x;
-
-            double y = te_eval(expr); /* Returns 5. */
-            y_arr[arr_index]=y;
-            arr_index++;
-
-        }
-        te_free(expr);
-    }
-
-    else {
-        QMessageBox msgBox;
-        QString errormsg = "Error at character " + QString::number(err);
-        if(equation[err-1].isLetter() && equation[err-1] != 'x')
-        {
-            errormsg += "\t \n you must use x as a variable only.  y = f(x) \t";
-        }
-        else if (equation[err-2].isSpace())
-        {
-            errormsg += "\t \n you should insert any operation in this space \t";
-        }
-        msgBox.setText(errormsg);
-        msgBox.exec();
-    }
-
+    // call the parsing function
+    parseEquation(expression, equation, x_arr, y_arr, x_min_d , x_max_d);
 
     // create graph and assign data to it:
     ui->customplot->addGraph();
     ui->customplot->graph(0)->setData(x_arr, y_arr);
+
     // set axes ranges, so we see all data:
     ui->customplot->xAxis->setRange(x_min_d, x_max_d);
     ui->customplot->yAxis->setRange(y_min_d, y_max_d);
@@ -210,6 +178,6 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_customplot_customContextMenuRequested(const QPoint &pos)
 {
-
+    //todo
 }
 
