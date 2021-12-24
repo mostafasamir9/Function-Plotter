@@ -1,5 +1,5 @@
 # Function Plotter
-![Image](image.png)
+![Image](image.png) <br/>
  Function plotter using QT 5 C++
 
 ## Enviornment
