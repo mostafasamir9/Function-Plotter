@@ -10,6 +10,7 @@ CONFIG -= app_bundle
 SOURCES += \
         functions.cpp \
         main.cpp \
+        testfunction.cpp \
         tinyexpr.c
 
 # Default rules for deployment.
@@ -19,4 +20,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     functions.h \
+    testfunction.h \
     tinyexpr.h

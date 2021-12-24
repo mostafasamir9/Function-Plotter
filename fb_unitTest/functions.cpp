@@ -18,11 +18,15 @@ void parseEquation(char* expression, QString equation , QVector<double> &x_arr, 
     if (expr) {
         //index of the vector begin from 0
         int arr_index = 0;
-        for (double i=x_min_d; i<x_max_d; i+=1.0/PRECISION)
+        for (double i=x_min_d; i<x_max_d + .1/PRECISION; i+= (1.0/PRECISION))
         {
             //iterate the values of x and the corresponding y values
-
             x = i;
+
+            // if x is smaller than most value then it's zero
+            if(x < 0.1/PRECISION && x > -0.1/PRECISION)
+                x = 0;
+
             x_arr[arr_index]=x;
 
             double y = te_eval(expr); // evaluate the expression and put the value in y
