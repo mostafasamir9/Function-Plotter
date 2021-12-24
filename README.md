@@ -1,5 +1,5 @@
 # Function Plotter
-[!image](image.png)
+[!Image](image.png)
  Function plotter using QT 5 C++
 
 ## Enviornment
@@ -7,8 +7,8 @@
 2- Compiler MinGW 32-Bit
 
 ## Used Libraries
-1- [!QCustomPlot](https://www.qcustomplot.com/)
-2- [!TinyExpr](https://github.com/codeplea/tinyexpr)
+1- [QCustomPlot](https://www.qcustomplot.com/)
+2- [TinyExpr](https://github.com/codeplea/tinyexpr)
 
 ## Screenshots
-[!Screenshots](https://github.com/MostafaAkrsh/Function-Plotter/tree/main/Screenshots)
+[Screenshots](https://github.com/MostafaAkrsh/Function-Plotter/tree/main/Screenshots)
