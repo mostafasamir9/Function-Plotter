@@ -81,7 +81,7 @@ void MainWindow::on_pushButton_clicked()
     }
 
     if(emptyinput){
-        displayMessage("your didn't enter an expression!");
+        displayMessage("You didn't enter an expression!");
         return;
     }
 
@@ -93,6 +93,7 @@ void MainWindow::on_pushButton_clicked()
         displayMessage("You didn't enter x_min!");
         return;
     }
+
     if(y_min.isEmpty()){
         displayMessage("You didn't enter y_min!");
         return;
@@ -146,6 +147,18 @@ void MainWindow::on_pushButton_clicked()
     double y_min_d, y_max_d = 0;
     y_min_d = y_min.toDouble();
     y_max_d = y_max.toDouble();
+
+
+    /********************* ranges validation *************************/
+    if(x_max_d<x_min_d){
+        displayMessage("x_min can't be bigger than x_max!");
+        return;
+    }
+
+    if(y_max_d<y_min_d){
+        displayMessage("y_min can't be bigger than y_max!");
+        return;
+    }
 
     // Getting equation string
     equation = equation.toLower();
